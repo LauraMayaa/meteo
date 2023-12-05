@@ -1,9 +1,19 @@
-
 <div>
-    <form (ngSubmit)="onSubmit()">
-      <label for="postalCode">Code postal :</label>
-      <input type="text" id="postalCode" name="postalCode" [(ngModel)]="postalCode" required>
-      <button type="submit">Rechercher la météo</button>
-    </form>
+  <form (ngSubmit)="onSubmit()">
+    <label for="postalCode">Code postal :</label>
+    <input type="text" id="postalCode" name="postalCode" [(ngModel)]="postalcode" required>
+    <button type="submit">Rechercher la météo</button>
+  </form>
+
+  <div *ngIf="resultForCast">
+
+    <ul>
+      <!-- <li *ngFor="let forcast of resultForCast.time  | keyvalue ; let i = index"> {{forcast.value}} :
+        {{resultForCast.temperature_2m[i]}} </li> -->
+
+      <li>Temperature : {{resultForCast.current.apparent_temperature}} </li>
+    </ul>
+
   </div>
-  
+
+</div>

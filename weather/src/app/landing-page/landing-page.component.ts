@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { WeatherService } from '../services/weather.service';
 
@@ -7,23 +7,39 @@ import { WeatherService } from '../services/weather.service';
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'
 })
-export class LandingPageComponent {
-  //  propriété pour stocker la valeur du code postal 
-  postalCode: string = '';
-  weatherData: any;
+export class LandingPageComponent implements OnInit {
 
-  constructor(private weatherService: WeatherService) { }
+  WeatherData: any;
+  postalcode: string = "";
+  resultGeocoding: any;
+  resultForCast: any;
+
+  constructor(private weather: WeatherService) { }
+
+  ngOnInit(): void {
+    console.log('hello')
+
+
+  }
 
   onSubmit() {
-    if (this.postalCode.trim() !== '') {
-      this.weatherService.getWeather(this.postalCode).subscribe(
-        (data) => {
-          this.weatherData = data;
-        },
-        (error) => {
-          console.error('Erreur lors de la récupération des données de météo :', error);
-        }
-      );
-    }
+    // this.getWeatherData();
+    this.weather.getGeocoding(this.postalcode).subscribe((r) => {
+      this.resultGeocoding = r
+      console.log(this.resultGeocoding)
+      this.getWeatherData(this.resultGeocoding.results[0].latitude, this.resultGeocoding.results[0].longitude)
+    })
+
+
   }
+
+  getWeatherData(lat: number, long: number) {
+
+    this.weather.getWethear(lat, long).subscribe(r => {
+
+      this.resultForCast = r;
+    })
+  }
+
 }
+
